@@ -1,0 +1,155 @@
+{
+  "diagnostics": {
+    "inline": {
+      "enabled": true
+    }
+  },
+  "show_edit_predictions": true,
+  "ssh_connections": [
+    {
+      "host": "43.204.103.145",
+      "username": "ubuntu",
+      "args": ["-i", "~/data/learn.pem"],
+      "projects": [],
+      "nickname": "Learn"
+    }
+  ],
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
+  "icon_theme": "Catppuccin Mocha",
+  "vim_mode": false,
+  "agent": {
+    "always_allow_tool_actions": true,
+    "inline_assistant_model": {
+      "provider": "copilot_chat",
+      "model": "claude-3.7-sonnet-thought"
+    },
+    "default_profile": "write",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gemini-2.5-pro-preview-06-05"
+    },
+    "version": "2"
+  },
+  // "cursor_shape": "block",
+  "ui_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "project_panel": {
+    "indent_size": 16,
+    "auto_fold_dirs": false
+  },
+  "file_finder": {
+    // "modal_max_width": "large"
+  },
+  "terminal": {
+    "toolbar": {
+      "breadcrumbs": false,
+      "quick_actions": false
+    },
+    "button": false,
+    "font_family": "JetBrainsMono Nerd Font"
+  },
+  // "telemetry": {
+  //   "diagnostics": false,
+  //   "metrics": false
+  // },
+  "autosave": "on_focus_change",
+  // "ui_font_size": 16,
+  // "buffer_font_size": 16,
+  "toolbar": {
+    "breadcrumbs": false,
+    "quick_actions": false
+    // "selections_menu": false
+  },
+  "scrollbar": {
+    "show": "never"
+  },
+  "scroll_beyond_last_line": "off",
+  // "vertical_scroll_margin": 0,
+  "cursor_blink": false,
+  "gutter": {
+    "line_numbers": false,
+    "code_actions": false,
+    "folds": false
+  },
+  "tabs": {
+    "file_icons": true
+  },
+  "tab_bar": {
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false
+  },
+  "theme": {
+    "mode": "system",
+    "light": "Ayu Light",
+    "dark": "Catppuccin Espresso (Blur)"
+  },
+  "experimental.theme_overrides": {
+    "unreachable.background": "#0C0C0C",
+    "drop_target.background": "#0C0C0C",
+    "background": "#0C0C0C",
+    "panel.background": "#0C0C0C",
+    "surface.background": "#0C0C0C",
+    "title_bar.background": "#0C0C0C",
+    "toolbar.background": "#0C0C0C",
+    "status_bar.background": "#0C0C0C",
+    "tab_bar.background": "#0C0C0C",
+    "tab.inactive_background": "#0C0C0C",
+    "elevated_surface.background": "#0C0C0C",
+    "ghost_element.background": "transparent",
+    "element.background": "transparent",
+    "editor.foreground": "#D1D5DC",
+    "text": "#D1D5DC",
+    "text.muted": "#778298",
+    "text.disabled": "#4A5565",
+    "text.placeholder": "#778298",
+    "terminal.background": "#0C0C0C",
+    "tab.active_background": "#0C0C0C",
+    "editor.background": "#0C0C0C",
+    "editor.gutter.background": "#0C0C0C",
+    "border": "#242424",
+    "border.focused": "#242424",
+    "border.selected": "#242424",
+    "border.variant": "#242424"
+  },
+  // "language_servers": ["!biome", "..."],
+  "language_servers": ["typescript-language-server", "!vtsls", "!biome", "..."]
+  // "languages": {
+  // 	"Python": {
+  // 		"language_servers": ["ruff"],
+  // 		"format_on_save": "on",
+  // 		"formatter": [
+  // 			{
+  // 				"code_actions": {
+  // 					"source.organizeImports.ruff": true,
+  // 					"source.fixAll.ruff": true
+  // 				}
+  // 			},
+  // 			{
+  // 				"language_server": {
+  // 					"name": "ruff"
+  // 				}
+  // 			}
+  // 		]
+  // 	}
+  // },
+  // "formatter": {
+  // 	"language_server": {
+  // 		"name": "biome"
+  // 	}
+  // },
+  // "code_actions_on_format": {
+  // 	"source.fixAll.biome": true,
+  // 	"source.organizeImports.biome": true
+  // },
+  // "lsp": {
+  //   "rust-analyzer": {
+  //     "initialization_options": {
+  //       "checkOnSave": {
+  //         "command": "clippy"
+  //       }
+  //     }
+  //   }
+  // }
+}
