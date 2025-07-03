@@ -1,24 +1,45 @@
+# Launch Hyprland only on the first tty
 [[ -z $DISPLAY && $(tty) == /dev/tty1 ]] && exec Hyprland
 
-if [[ ":$FPATH:" != *":/home/aman/.zsh/completions:"* ]]; then export FPATH="/home/aman/.zsh/completions:$FPATH"; fi
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# --- Paths & env ---
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+export ANDROID_HOME="$HOME/Android/Sdk"
+export NDK_HOME="$ANDROID_HOME/ndk/28.0.12433566"
+export BUN_INSTALL="$HOME/.bun"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$BUN_INSTALL/bin:$PNPM_HOME"
+export BAT_THEME="base16"
+export EDITOR="nvim"
+export SUDO_EDITOR="nvim"
 
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+# --- History ---
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt APPEND_HISTORY SHARE_HISTORY HIST_FCNTL_LOCK EXTENDED_HISTORY HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
 
-export ZSH="$HOME/.oh-my-zsh"
+# --- Completions path ---
+[[ :$FPATH: == *:$HOME/.zsh/completions:* ]] || export FPATH="$HOME/.zsh/completions:$FPATH"
 
-ZSH_THEME=""
+# --- Antidote plugin manager ---
+[[ -f $HOME/.antidote/antidote.zsh ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git $HOME/.antidote
+source "$HOME/.antidote/antidote.zsh"
+ZSH_PLUGINS_FILE="$HOME/.zsh_plugins"
+[[ -f $ZSH_PLUGINS_FILE ]] || cat <<'EOF' > "$ZSH_PLUGINS_FILE"
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-completions
+Aloxaf/fzf-tab
+jimhester/per-directory-history
+EOF
+antidote load "$ZSH_PLUGINS_FILE"
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting dirhistory fzf-tab fzf mise)
+# --- Prompt & utils ---
+command -v starship >/dev/null && eval "$(starship init zsh)"
+[[ -s "$HOME/.atuin/bin/env" ]] && { . "$HOME/.atuin/bin/env"; eval "$(atuin init zsh --disable-up-arrow)"; }
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
-source $ZSH/oh-my-zsh.sh
-
-#source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-#source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-eval "$(starship init zsh)"
-
-# File system
+# --- Aliases ---
 alias ls='eza -lh --group-directories-first --icons'
 alias lsa='ls -a'
 alias lt='eza --tree --level=2 --long --icons --git'
@@ -27,13 +48,9 @@ alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"
 alias fd='fdfind'
 alias cd='z'
 alias cs='cht.sh'
-
-# Directories
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-
-# Tools
 alias n='nvim'
 alias g='git'
 alias d='docker'
@@ -41,127 +58,54 @@ alias bat='batcat'
 alias lzg='lazygit'
 alias lzd='lazydocker'
 alias fman='compgen -c | fzf | xargs man'
-
-# Git
 alias gcm='git commit -m'
 alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
+alias fix_fkeys='echo 2 | sudo tee /sys/module/hid_apple/parameters/fnmode'
 
-export EDITOR="nvim"
-export SUDO_EDITOR="nvim"
-
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$HOME/.local/bin:$PATH
-export NDK_HOME=$HOME/Android/Sdk/ndk/28.0.12433566
-
-export BAT_THEME="base16"
-
-setopt HIST_IGNORE_SPACE
-
-function y() {
-  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+# --- Functions ---
+y() {
+  local tmp="$(mktemp -t 'yazi-cwd.XXXXXX')" cwd
   yazi "$@" --cwd-file="$tmp"
-  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+  if cwd="$(<"$tmp")" && [[ -n $cwd && $cwd != $PWD ]]; then
     builtin cd -- "$cwd"
   fi
   rm -f -- "$tmp"
 }
 
-if command -v zoxide &> /dev/null; then
-  eval "$(zoxide init zsh)"
-fi
-
-# bun completions
-[ -s "/home/aman/.bun/_bun" ] && source "/home/aman/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-. "$HOME/.atuin/bin/env"
-
-eval "$(atuin init zsh --disable-up-arrow)"
-
-# Compression
-compress() { tar -czf "${1%/}.tar.gz" "${1%/}"; }
-alias decompress="tar -xzf"
-
-# Write iso file to sd card
-iso2sd() {
-  if [ $# -ne 2 ]; then
-    echo "Usage: iso2sd <input_file> <output_device>"
-    echo "Example: iso2sd ~/Downloads/ubuntu-25.04-desktop-amd64.iso /dev/sda"
-    echo -e "\nAvailable SD cards:"
-    lsblk -d -o NAME | grep -E '^sd[a-z]' | awk '{print "/dev/"$1}'
-  else
-    sudo dd bs=4M status=progress oflag=sync if="$1" of="$2"
-    sudo eject $2
-  fi
+aiso2sd() {
+  (( $# == 2 )) || { echo "Usage: iso2sd <input_file> <output_device>"; return 1; }
+  sudo dd bs=4M status=progress oflag=sync if="$1" of="$2" && sudo eject "$2"
 }
 
-# Create a desktop launcher for a web app
 web2app() {
-  if [ "$#" -ne 3 ]; then
-    echo "Usage: web2app <AppName> <AppURL> <IconURL> (IconURL must be in PNG -- use https://dashboardicons.com)"
-    return 1
-  fi
-
-  local APP_NAME="$1"
-  local APP_URL="$2"
-  local ICON_URL="$3"
-  local ICON_DIR="$HOME/.local/share/applications/icons"
-  local DESKTOP_FILE="$HOME/.local/share/applications/${APP_NAME}.desktop"
-  local ICON_PATH="${ICON_DIR}/${APP_NAME}.png"
-
-  mkdir -p "$ICON_DIR"
-
-  if ! curl -sL -o "$ICON_PATH" "$ICON_URL"; then
-    echo "Error: Failed to download icon."
-    return 1
-  fi
-
-  cat > "$DESKTOP_FILE" <<EOF
+  (( $# == 3 )) || { echo "Usage: web2app <AppName> <AppURL> <IconURL>"; return 1; }
+  local app="$1" url="$2" icon_url="$3"
+  local icon_dir="$HOME/.local/share/applications/icons"
+  local desktop="$HOME/.local/share/applications/${app}.desktop"
+  local icon_path="${icon_dir}/${app}.png"
+  mkdir -p "$icon_dir" && curl -sL -o "$icon_path" "$icon_url" || return 1
+  cat > "$desktop" <<EOF
 [Desktop Entry]
 Version=1.0
-Name=$APP_NAME
-Comment=$APP_NAME
-Exec=chromium --new-window --ozone-platform=wayland --app="$APP_URL" --name="$APP_NAME" --class="$APP_NAME"
+Name=$app
+Exec=chromium --new-window --ozone-platform=wayland --app="$url" --name="$app" --class="$app"
 Terminal=false
 Type=Application
-Icon=$ICON_PATH
+Icon=$icon_path
 StartupNotify=true
 EOF
-
-  chmod +x "$DESKTOP_FILE"
+  chmod +x "$desktop"
 }
 
 web2app-remove() {
-  if [ "$#" -ne 1 ]; then
-    echo "Usage: web2app-remove <AppName>"
-    return 1
-  fi
-
-  local APP_NAME="$1"
-  local ICON_DIR="$HOME/.local/share/applications/icons"
-  local DESKTOP_FILE="$HOME/.local/share/applications/${APP_NAME}.desktop"
-  local ICON_PATH="${ICON_DIR}/${APP_NAME}.png"
-
-  rm "$DESKTOP_FILE"
-  rm "$ICON_PATH"
+  (( $# == 1 )) || { echo "Usage: web2app-remove <AppName>"; return 1; }
+  rm -f "$HOME/.local/share/applications/${1}.desktop" "$HOME/.local/share/applications/icons/${1}.png"
 }
 
-# Ensure that external keyboards that use an fn key has the F keys as the default
-alias fix_fkeys='echo 2 | sudo tee /sys/module/hid_apple/parameters/fnmode'
+# --- Completion init (deferred) ---
+zmodload zsh/complist
+[[ -n $ZSH_COMPDUMP_LOADED ]] || { autoload -Uz compinit && compinit -d "$HOME/.zcompdump" -C; ZSH_COMPDUMP_LOADED=1 }
 
-
-# pnpm
-export PNPM_HOME="/home/aman/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
+# --- mise ---
 eval "$(/home/aman/.local/bin/mise activate zsh)"
