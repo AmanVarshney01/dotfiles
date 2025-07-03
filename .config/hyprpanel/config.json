@@ -100,5 +100,7 @@
   "bar.systray.ignore": [
     "Fcitx",
     "CopyQ_copyq"
-  ]
+  ],
+  "bar.network.truncation": false,
+  "theme.bar.outer_spacing": "0.2em"
 }
