@@ -67,7 +67,7 @@
   "bar.systray.customIcons": {},
   "theme.bar.buttons.clock.enableBorder": false,
   "bar.clock.showTime": true,
-  "bar.clock.showIcon": false,
+  "bar.clock.showIcon": true,
   "bar.notifications.show_total": false,
   "menus.media.hideAuthor": true,
   "menus.media.hideAlbum": true,
@@ -106,5 +106,6 @@
   "theme.bar.menus.cards": "#1e1e2e",
   "theme.matugen_settings.scheme_type": "rainbow",
   "theme.matugen_settings.variation": "standard_1",
-  "theme.bar.background": "#111111"
+  "theme.bar.background": "#111111",
+  "bar.clock.format": "%a %b %d  %I:%M %p"
 }
