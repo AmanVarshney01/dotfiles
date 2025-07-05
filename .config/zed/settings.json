@@ -5,15 +5,6 @@
     }
   },
   "show_edit_predictions": true,
-  "ssh_connections": [
-    {
-      "host": "43.204.103.145",
-      "username": "ubuntu",
-      "args": ["-i", "~/data/learn.pem"],
-      "projects": [],
-      "nickname": "Learn"
-    }
-  ],
   "features": {
     "edit_prediction_provider": "copilot"
   },
