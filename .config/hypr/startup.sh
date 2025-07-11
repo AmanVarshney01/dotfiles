@@ -1,0 +1,1 @@
+unset WAYLAND_DISPLAY
