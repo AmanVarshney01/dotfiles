@@ -14,12 +14,12 @@
     "always_allow_tool_actions": true,
     "inline_assistant_model": {
       "provider": "copilot_chat",
-      "model": "claude-3.7-sonnet-thought"
+      "model": "gpt-4.1"
     },
     "default_profile": "write",
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "claude-3.7-sonnet-thought"
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4-thinking"
     },
     "version": "2"
   },
