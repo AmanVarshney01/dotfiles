@@ -1,0 +1,9 @@
+customCommands:
+  - key: "G"
+    command: "gh browse"
+    context: "global"
+    description: "Show github repo in browser"
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
