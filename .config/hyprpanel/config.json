@@ -36,7 +36,7 @@
   "menus.power.showLabel": true,
   "wallpaper.image": "/home/aman/wallpapers/wallhaven-6ljx8x.jpg",
   "wallpaper.enable": false,
-  "theme.matugen": false,
+  "theme.matugen": true,
   "theme.bar.transparent": false,
   "bar.autoHide": "never",
   "theme.bar.buttons.enableBorders": false,
@@ -103,7 +103,7 @@
   "bar.network.truncation": false,
   "theme.bar.outer_spacing": "0.2em",
   "theme.matugen_settings.scheme_type": "rainbow",
-  "theme.matugen_settings.variation": "standard_1",
+  "theme.matugen_settings.variation": "standard_3",
   "bar.clock.format": "%a %b %d  %I:%M %p",
   "theme.bar.background": "#111111",
   "theme.bar.menus.background": "#111111",
@@ -473,5 +473,6 @@
   "theme.bar.buttons.modules.worldclock.background": "#1E1E2E",
   "theme.bar.buttons.modules.worldclock.icon_background": "#B4BEFE",
   "theme.bar.buttons.modules.worldclock.icon": "#B4BEFE",
-  "theme.bar.buttons.modules.worldclock.border": "#B4BEFE"
+  "theme.bar.buttons.modules.worldclock.border": "#B4BEFE",
+  "theme.matugen_settings.mode": "dark"
 }
