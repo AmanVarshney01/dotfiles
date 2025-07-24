@@ -6,4 +6,4 @@ hyprshot -m ${1:-region} --raw |
     --early-exit \
     --actions-on-enter save-to-clipboard \
     --save-after-copy \
-    --copy-command 'copyq add -'
+    --copy-command 'copyq copy image/png -'
