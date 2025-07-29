@@ -1,14 +1,10 @@
 {
   "bar.layouts": {
     "*": {
-      "left": [
-        "dashboard",
-        "workspaces"
-      ],
+      "left": ["dashboard", "workspaces"],
       "middle": [],
       "right": [
         "volume",
-        "network",
         "bluetooth",
         "battery",
         "systray",
@@ -17,9 +13,7 @@
       ]
     }
   },
-  "bar.customModules.storage.paths": [
-    "/"
-  ],
+  "bar.customModules.storage.paths": ["/"],
   "theme.font.size": "0.65rem",
   "terminal": "$TERMINAL",
   "theme.font.name": "JetBrainsMono Nerd Font",
@@ -96,10 +90,7 @@
   "bar.media.truncation": true,
   "bar.media.format": "{artist: - }{title}",
   "bar.media.show_active_only": true,
-  "bar.systray.ignore": [
-    "Fcitx",
-    "CopyQ_copyq"
-  ],
+  "bar.systray.ignore": ["Fcitx", "CopyQ_copyq"],
   "bar.network.truncation": false,
   "theme.bar.outer_spacing": "0.2em",
   "theme.matugen_settings.scheme_type": "rainbow",
